@@ -1,0 +1,43 @@
+plugins {
+    id 'java'
+    id "io.freefair.lombok" version "8.6"
+    id "org.springframework.boot" version "3.3.1"
+    id "io.spring.dependency-management" version "1.1.6"
+}
+
+apply from: 'version.gradle'
+
+apply plugin: 'io.spring.dependency-management'
+
+group = 'com.hottabych04.app'
+version = '1.0-SNAPSHOT'
+sourceCompatibility = '21'
+
+repositories {
+    mavenCentral()
+    maven { url 'https://repo.spring.io/milestone' }
+    maven { url 'https://repo.spring.io/snapshot' }
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    implementation 'org.postgresql:postgresql'
+    implementation 'org.liquibase:liquibase-core'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly "org.projectlombok:lombok:${versions.lombok}"
+    annotationProcessor "org.projectlombok:lombok:${versions.lombok}"
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testCompileOnly "org.projectlombok:lombok:${versions.lombok}"
+    testAnnotationProcessor "org.projectlombok:lombok:${versions.lombok}"
+    testImplementation "org.testcontainers:postgresql:${versions.testcontainers}"
+}
+
+test {
+    useJUnitPlatform()
+}
+
+bootJar {
+    archiveFileName = 'translation-service.jar'
+}
