@@ -1,7 +1,7 @@
 --liquibase formatted sql
 
 --changeset hottabych04:1
-CREATE TABLE IF NOT EXISTS translate
+CREATE TABLE IF NOT EXISTS translation
 (
     id BIGSERIAL PRIMARY KEY ,
     ip VARCHAR(16) NOT NULL ,
