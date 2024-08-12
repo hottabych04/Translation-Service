@@ -1,9 +1,8 @@
-package com.hottabych04.app.http.client.body;
+package com.hottabych04.app.http.body;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
-
-import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -12,11 +11,14 @@ import java.util.List;
 @Setter
 public class TranslationReq {
 
+    @NotEmpty
     @JsonProperty("sourceLanguageCode")
     private String sourceLang;
+    @NotEmpty
     @JsonProperty("targetLanguageCode")
     private String targetLang;
+    @NotEmpty
     @JsonProperty("texts")
-    private List<String> text;
+    private String text;
 
 }
