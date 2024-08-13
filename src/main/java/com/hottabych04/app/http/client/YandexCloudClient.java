@@ -1,5 +1,6 @@
 package com.hottabych04.app.http.client;
 
+import com.hottabych04.app.exception.YandexCloudNotAvailable;
 import com.hottabych04.app.http.body.Languages;
 import com.hottabych04.app.http.body.TranslationReq;
 import com.hottabych04.app.http.body.TranslationResp;
@@ -19,7 +20,7 @@ public class YandexCloudClient {
     private final String apiKey, apiUrl;
     private final RestTemplate restTemplate;
 
-    public String translate(@Nonnull String sourceLang,@Nonnull String targetLang,@Nonnull String text){
+    public String translate(@Nonnull String sourceLang,@Nonnull String targetLang,@Nonnull String text) {
 
         TranslationReq requestBody =  TranslationReq.builder()
                 .sourceLang(sourceLang)
@@ -42,7 +43,11 @@ public class YandexCloudClient {
         } catch (HttpClientErrorException e) {
             if (e.getStatusCode().value() == 401) {
                 throw new RuntimeException("Api-key is invalid: " + apiKey);
+            } else if (e.getStatusCode().is4xxClientError() && e.getStatusCode().is5xxServerError()) {
+                throw new YandexCloudNotAvailable();
             }
+        } catch (Exception e){
+            throw new YandexCloudNotAvailable();
         }
 
         return null;
@@ -66,7 +71,11 @@ public class YandexCloudClient {
         } catch (HttpClientErrorException e) {
             if (e.getStatusCode().value() == 401) {
                 throw new RuntimeException("Api-key is invalid: " + apiKey);
+            } else if (e.getStatusCode().is4xxClientError() && e.getStatusCode().is5xxServerError()) {
+                throw new YandexCloudNotAvailable();
             }
+        } catch (Exception e){
+            throw new YandexCloudNotAvailable();
         }
 
         return null;

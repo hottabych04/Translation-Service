@@ -10,11 +10,12 @@ import lombok.*;
 @Builder
 @Getter
 @Setter
-@Lang
 public class TranslationReq {
 
+    @Lang
     @JsonProperty("sourceLanguageCode")
     private String sourceLang;
+    @Lang
     @JsonProperty("targetLanguageCode")
     private String targetLang;
     @NotEmpty

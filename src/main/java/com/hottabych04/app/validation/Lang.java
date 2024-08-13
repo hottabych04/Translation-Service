@@ -12,7 +12,7 @@ import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Constraint(validatedBy = LanguageValidator.class)
-@Target(TYPE)
+@Target(FIELD)
 @Retention(RUNTIME)
 public @interface Lang {
 
