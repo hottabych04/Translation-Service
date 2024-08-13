@@ -1,5 +1,8 @@
 package com.hottabych04.app.config;
 
+import com.hottabych04.app.http.body.Language;
+import com.hottabych04.app.http.client.YandexCloudClient;
+import com.hottabych04.app.manager.LanguageManager;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +27,20 @@ public class ApplicationConfig {
     @Bean
     public RestTemplate restTemplate(List<HttpMessageConverter<?>> messageConverters){
         return new RestTemplate(messageConverters);
+    }
+
+    @Bean
+    public LanguageManager languageManager(YandexCloudClient cloudClient){
+        List<String> langCodes = null;
+        try {
+            langCodes = cloudClient.languages().getLanguages().stream()
+                    .map(Language::getCode)
+                    .toList();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return new LanguageManager(langCodes);
     }
 
 }
