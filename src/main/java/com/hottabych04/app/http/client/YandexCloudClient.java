@@ -72,7 +72,7 @@ public class YandexCloudClient {
             if (e.getStatusCode().value() == 401) {
                 throw new RuntimeException("Api-key is invalid: " + apiKey);
             } else if (e.getStatusCode().is4xxClientError() && e.getStatusCode().is5xxServerError()) {
-                throw new YandexCloudNotAvailable();
+                throw new YandexCloudNotAvailable(e.getStatusText());
             }
         } catch (Exception e){
             throw new YandexCloudNotAvailable();

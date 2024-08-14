@@ -6,4 +6,8 @@ public class YandexCloudNotAvailable extends RuntimeException {
         super("Yandex Cloud Service is not available");
     }
 
+    public YandexCloudNotAvailable(String msg){
+        super(msg);
+    }
+
 }

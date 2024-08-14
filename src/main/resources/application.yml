@@ -17,3 +17,7 @@ yandex:
     api:
       key: key
       url: https://translate.api.cloud.yandex.net/translate/v2
+
+translate:
+  thread:
+    count: 10

@@ -13,6 +13,9 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
 
 @Configuration
 public class ApplicationConfig {
@@ -27,6 +30,23 @@ public class ApplicationConfig {
     @Bean
     public String apiUrl(@Value("${yandex.cloud.api.url}") String url){
         return url;
+    }
+
+    @Bean
+    public Integer translateThreadCount(@Value("${translate.thread.count}") Integer countThread){
+        if (countThread > 10) countThread = 10;
+
+        return countThread;
+    }
+
+    @Bean
+    public Semaphore translateSemaphore(Integer translateThreadCount){
+        return new Semaphore(translateThreadCount);
+    }
+
+    @Bean
+    public ExecutorService transalteThreadPool(Integer translateThreadCount){
+        return Executors.newFixedThreadPool(translateThreadCount);
     }
 
     @Bean
