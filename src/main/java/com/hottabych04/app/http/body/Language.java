@@ -9,8 +9,11 @@ import lombok.*;
 @Getter
 @Setter
 public class Language {
+
     @JsonProperty("code")
     private String code;
+
     @JsonProperty("name")
     private String name;
+
 }

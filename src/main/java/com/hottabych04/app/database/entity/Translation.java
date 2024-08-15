@@ -16,8 +16,11 @@ public class Translation {
 
     @Id
     private Long id;
+
     private String ip;
+
     private String sourceText;
+
     private String translateText;
 
 }

@@ -15,9 +15,11 @@ public class TranslationReq {
     @Lang
     @JsonProperty("sourceLanguageCode")
     private String sourceLang;
+
     @Lang
     @JsonProperty("targetLanguageCode")
     private String targetLang;
+
     @NotEmpty
     @JsonProperty("texts")
     private String text;
