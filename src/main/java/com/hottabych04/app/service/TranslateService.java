@@ -5,9 +5,12 @@ import com.hottabych04.app.database.repository.TranslationRepository;
 import com.hottabych04.app.dto.TranslationDto;
 import com.hottabych04.app.dto.TranslationPageDto;
 import com.hottabych04.app.exception.SymbolsLimitExceeded;
+import com.hottabych04.app.http.body.Language;
+import com.hottabych04.app.http.body.Languages;
 import com.hottabych04.app.http.client.YandexCloudClient;
 import com.hottabych04.app.http.body.TranslationReq;
 import com.hottabych04.app.http.body.TranslationTextResp;
+import com.hottabych04.app.manager.LanguageManager;
 import com.hottabych04.app.mapper.PageTranslationMapper;
 import com.hottabych04.app.mapper.TranslationMapper;
 import jakarta.annotation.PostConstruct;
@@ -30,6 +33,7 @@ public class TranslateService {
     private final TranslationRepository translationRepository;
     private final YandexCloudClient cloudClient;
     private final Integer translateThreadCount;
+    private final LanguageManager languageManager;
 
     private final TranslationMapper translationMapper;
     private final PageTranslationMapper pageTranslationMapper;
@@ -62,6 +66,10 @@ public class TranslateService {
                 3600000L,
                 TimeUnit.MILLISECONDS
         );
+    }
+
+    public Languages getAvailableLanguages(){
+        return new Languages(languageManager.getAllLanguages());
     }
 
     public TranslationTextResp translate(TranslationReq translationReq, HttpServletRequest httpServletRequest) {

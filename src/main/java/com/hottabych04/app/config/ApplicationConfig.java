@@ -44,18 +44,23 @@ public class ApplicationConfig {
     @Bean
     public LanguageManager languageManager(YandexCloudClient cloudClient) throws InterruptedException {
 
-        List<String> langCodes;
+        List<Language> langCodes;
+
         while (true){
+
             try {
-                langCodes = cloudClient.languages().getLanguages().stream()
-                        .map(Language::getCode)
-                        .toList();
+
+                langCodes = cloudClient.languages().getLanguages();
 
                 return new LanguageManager(langCodes);
+
             } catch (YandexCloudNotAvailable ignored) {
+
                 log.warn("Restart connect to Yandex Cloud for init Language Manager...");
                 Thread.sleep(1000L);
+
             }
+
         }
 
     }
