@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+
+  db:
+    image: 'postgres:16.3'
+    container_name: translation-service-db
+    restart: unless-stopped
+    env_file: ./.env
+    environment:
+      - POSTGRES_USER=$POSTGRESDB_USER
+      - POSTGRES_PASSWORD=$POSTGRESDB_ROOT_PASSWORD
+      - POSTGRES_DB=$POSTGRESDB_DATABASE
+    ports:
+      - $POSTGRESDB_LOCAL_PORT:$POSTGRESDB_DOCKER_PORT
+    healthcheck:
+      test:
+        - "CMD-SHELL"
+        - "sh -c 'pg_isready -U $POSTGRESDB_USER -d $POSTGRESDB_DATABASE'"
+      interval: 3s
+      timeout: 5s
+      retries: 10
+
+  app:
+    image: 'translation-service-app:latest'
+    build:
+      context: .
+    container_name: translation-service-app
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+    env_file: ./.env
+    ports:
+      - $SPRING_LOCAL_PORT:$SPRING_DOCKER_PORT
+    environment:
+      SPRING_APPLICATION_JSON: '{
+              "spring.datasource.url"  : "jdbc:postgresql://translation-service-db:$POSTGRESDB_DOCKER_PORT/$POSTGRESDB_DATABASE",
+              "spring.datasource.username" : "$POSTGRESDB_USER",
+              "spring.datasource.password" : "$POSTGRESDB_ROOT_PASSWORD",
+              "yandex.cloud.api.key" : "$YANDEX_CLOUD_API_KEY"
+            }'
